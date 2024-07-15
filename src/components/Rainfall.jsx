@@ -1,61 +1,100 @@
 import React from 'react'
+import { useState } from 'react';
+import { FaCalendarAlt } from 'react-icons/fa';
 import { FaCloudRain } from "react-icons/fa6";
 
 export const Rainfall = () => {
-   
+
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [output, setOutput] = useState('');
+
+  const handleFetch = async () => {
+    try {
+      const response = await fetch('/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ latitude, longitude, start_date: startDate, end_date: endDate }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        setOutput(`<p>Error: ${data.error}</p>`);
+      } else {
+        let outputHtml = '<h3>Predicted Rainfall</h3>';
+        data.forEach((item) => {
+          outputHtml += `<p>Date: ${item.time}, Predicted Rain Sum (mm): ${item['predicted_rain_sum (mm)']}</p>`;
+        });
+        setOutput(outputHtml);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
-    <div className='bg-cover bg-center h-screen w-full flex items-center ' style={{backgroundImage:"url('/public/images/ai-generated-dark-sky-and-clouds-background-storm-time-dark-thunderstorm-free-photo.jpeg')"}}>
-      long-mountain-range
-    
-        <div className='h-[33rem] w-[25rem] border mx-auto border-gray-200 backdrop-blur-3xl rounded-xl shadow-xl'>
-            <h1 className='text-center text-2xl text-[white] mt-1 '>Rainfall prediction</h1>
-           
-           <div className='gap-4'>
-           <div className='ml-4 '>
-            <label>
-                <p className='text-[white] text-base mb-1'>Latitude</p>
-                <input className='bg-transparent border border-white w-[22rem] p-1 mb-5 text-[white] focus outline-none rounded-md ' placeholder='Enter the latitude'></input>
-            </label>
-           </div>
-
-            
-           <div className='ml-4'>
-            <label>
-                <p className='text-[white] text-base mb-1'>Longitude</p>
-                <input  className='bg-transparent border border-white w-[22rem] p-1 mb-5 text-[white] rounded-md focus outline-none' placeholder='Enter the longitude'></input>
-            </label>
-           </div>
-
-           <div className='ml-4'>
-            <label>
-                <p className='text-[white] text-base mb-1'>Start Date</p>
-                <input  type='date' className='bg-transparent border border-white text-[white] w-[22rem] rounded-md p-1 mb-5 focus outline-none' placeholder='Enter the latitude'></input>
-            </label>
-           </div>
-
-           <div className='ml-4'>
-            <label>
-                <p className='text-[white] text-base mb-1'>End Date</p>
-                <input  type='date' className='bg-transparent border border-white text-[white] w-[22rem] p-1 rounded-md mb-5 focus outline-none' placeholder='Enter the latitude'></input>
-            </label>
-           </div>
-           
-           <div className='w-[22rem] ml-4 bg-blue-500 hover:bg-blue-700 text-center h-10 flex gap-2  rounded-md mt-3'>
-
-         <button className='ml-28 text-center text-[white]'> Get Prediction </button>
-         <FaCloudRain className='mt-3 text-[white]' />
-        </div>
-
-           {/* <button className='border border-gray-200 bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 p-1 w-[22rem] '>Get prediction </button> */}
-           
-
-         </div>
-           
-        </div>
-      
-
+      <div className='bg-cover bg-center h-screen w-full flex items-center ' style={{backgroundImage:"url('/public/images/ai-generated-dark-sky-and-clouds-background-storm-time-dark-thunderstorm-free-photo.jpeg')"}}>
+     <div className='h-[33rem] w-[25rem] border mx-auto border-gray-200 backdrop-blur-3xl rounded-xl'>
+      <h1 className='text-2xl mt-2 text-center text-[white]'>Rainfall Prediction</h1>
+    <div className="max-w-lg mx-auto p-4">
+      <div className="form-group">
+        <label htmlFor="latitude" className='text-[white]'>Latitude</label>
+        <input
+          id="latitude"
+          type="text"
+          className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+          value={latitude}
+          onChange={(e) => setLatitude(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="longitude" className='text-[white]'>Longitude</label>
+        <input
+          id="longitude"
+          type="text"
+          className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+          value={longitude}
+          onChange={(e) => setLongitude(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="start_date" className='text-[white]'>Start Date</label>
+        <input
+          id="start_date"
+          type="date"
+          className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="end_date" className='text-[white]'>End Date</label>
+        <input
+          id="end_date"
+          type="date"
+          className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+      </div>
+      <button
+        onClick={handleFetch}
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+      >
+        Fetch Prediction
+      </button>
+      <div id="output" className="mt-4" dangerouslySetInnerHTML={{ __html: output }}></div>
+    </div>
+    </div>
     </div>
 
-    
-  )
+  );
 }
+
+
+
