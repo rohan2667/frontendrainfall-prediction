@@ -5,6 +5,7 @@ import { FaCloudRain } from "react-icons/fa6";
 
 export const Rainfall = () => {
 
+
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [startDate, setStartDate] = useState('');
