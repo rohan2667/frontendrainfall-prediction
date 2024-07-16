@@ -29,7 +29,7 @@ export const Rainfall = () => {
       } else {
         let outputHtml = '<h3>Predicted Rainfall</h3>';
         data.forEach((item) => {
-          outputHtml += `<p>Date: ${item.time}, Predicted Rain Sum (mm): ${item['predicted_rain_sum (mm)']}</p>`;
+          outputHtml += `<p>Date: ${item.time}, Predicted Rain  Sum (mm): ${item['predicted_rain_sum (mm)']}</p>`;
         });
         setOutput(outputHtml);
       }
@@ -48,7 +48,7 @@ export const Rainfall = () => {
         <input
           id="latitude"
           type="text"
-          className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+          className="w-full p-2 mt-2 border border-gray-300 focus outline-none rounded-md"
           value={latitude}
           onChange={(e) => setLatitude(e.target.value)}
         />
@@ -58,7 +58,7 @@ export const Rainfall = () => {
         <input
           id="longitude"
           type="text"
-          className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+          className="w-full p-2 mt-2 border border-gray-300 focus outline-none rounded-md"
           value={longitude}
           onChange={(e) => setLongitude(e.target.value)}
         />
@@ -68,7 +68,7 @@ export const Rainfall = () => {
         <input
           id="start_date"
           type="date"
-          className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+          className="w-full p-2 mt-2 border border-gray-300 focus outline-none rounded-md"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
         />
@@ -78,7 +78,7 @@ export const Rainfall = () => {
         <input
           id="end_date"
           type="date"
-          className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+          className="w-full p-2 mt-2 border border-gray-300 focus outline-none rounded-md"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
